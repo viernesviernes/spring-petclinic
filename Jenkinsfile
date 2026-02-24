@@ -3,7 +3,7 @@ pipeline {
 
     triggers {
         // Trigger every 5 minutes only on Mondays (Day 1)
-        cron('H/5 * * * 1')
+        cron('H/1 * * * 2')
     }
 
     stages {

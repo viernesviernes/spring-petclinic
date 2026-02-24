@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        // Trigger every 5 minutes only on Mondays (Day 1)
+        // Currently set to every 1 minute on Tuesday (Day 2) for your screenshots
         cron('H/1 * * * 2')
     }
 
@@ -15,21 +15,18 @@ pipeline {
 
         stage('Build & Test with Coverage') {
             steps {
-                // Runs Maven test and generates JaCoCo report
-                bat './mvnw clean verify' 
+                // FIX: Use mvnw.cmd for Windows and remove the './'
+                bat 'mvnw.cmd clean verify' 
             }
         }
     }
 
     post {
         always {
-            // This plugin must be installed in Jenkins to work
-            jacoco buildContext: [[]], 
-                   execPattern: '**/target/*.exec', 
-                   classPattern: '**/target/classes', 
-                   sourcePattern: '**/src/main/java'
+            // Simplified JaCoCo call to avoid plugin version errors
+            jacoco()
             
-            // Archives the .jar file as an artifact
+            // Archives the .jar file
             archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
         }
     }
